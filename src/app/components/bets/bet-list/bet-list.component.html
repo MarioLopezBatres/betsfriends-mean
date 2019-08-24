@@ -1,0 +1,13 @@
+<mat-accordion multi="true" *ngIf="bets.length > 0">
+  <mat-expansion-panel *ngFor="let bet of bets">
+    <mat-expansion-panel-header>
+      {{bet.title}}
+    </mat-expansion-panel-header>
+    <p>{{bet.description}}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDIT</button>
+      <button mat-button color="warn">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="mat-body-1 info-text" *ngIf="bets.length <= 0 ">No bets added yet!</p>
