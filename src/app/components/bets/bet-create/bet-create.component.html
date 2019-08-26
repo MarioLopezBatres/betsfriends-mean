@@ -1,47 +1,100 @@
+<!-- REACTIVE WAY - OWN VALIDATORS BUT DESACTIVE NGMODEL -->
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSaveBet(betForm)" #betForm="ngForm" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSaveBet()" *ngIf="!isLoading">
+    <!-- Image -->
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker>
+    </div>
     <!-- Text Inputs -->
     <mat-form-field>
-      <input #title="ngModel" matInput type="text" placeholder="Title" name="title" [ngModel]="bet?.title" required>
-      <mat-error *ngIf="title.invalid">Please enter a Bet Title</mat-error>
+      <input matInput type="text" placeholder="Title" formControlName="title">
+      <mat-error *ngIf="form.get('title').invalid">Please enter a Bet Title</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea #description="ngModel" matInput rows="6" placeholder="Description" name="description"
-        [ngModel]="bet?.description" required></textarea>
-      <mat-error *ngIf="description.invalid">Please enter a Bet Description</mat-error>
+      <textarea matInput rows="6" placeholder="Description" formControlName="description"></textarea>
+      <mat-error *ngIf="form.get('description').invalid">Please enter a Bet Description</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input #prize="ngModel" matInput type="text" placeholder="Prize" name="prize" [ngModel]="bet?.prize" required>
-      <mat-error *ngIf="prize.invalid">Please enter a Bet Prize</mat-error>
+      <input matInput type="text" placeholder="Prize" formControlName="prize">
+      <mat-error *ngIf="form.get('prize').invalid">Please enter a Bet Prize</mat-error>
     </mat-form-field>
     <!-- Toogle Inputs -->
-    <mat-slide-toggle #private="ngModel" name="private" [ngModel]="bet?.private || false">Private</mat-slide-toggle>
-    <mat-slide-toggle #comments="ngModel" name="comments" [ngModel]="bet?.comments || false">Allow comments
+    <mat-slide-toggle formControlName="private">Private</mat-slide-toggle>
+    <mat-slide-toggle formControlName="comments">Allow comments
     </mat-slide-toggle>
     <!-- Date Inputs-->
     <mat-form-field>
-      <input matInput #startDate="ngModel" name="startDate" [ngModel]="bet?.startDate" required
-        [matDatepicker]="initCalendar" placeholder="Choose the start date" required>
+      <input matInput formControlName="startDate" [matDatepicker]="initCalendar" placeholder="Choose the start date">
       <mat-datepicker-toggle matSuffix [for]="initCalendar"></mat-datepicker-toggle>
       <mat-datepicker #initCalendar></mat-datepicker>
-      <mat-error *ngIf="startDate.invalid">Please enter a Start Date</mat-error>
+      <mat-error *ngIf="form.get('startDate').invalid">Please enter a Start Date</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput #endDate="ngModel" name="endDate" [ngModel]="bet?.endDate" [matDatepicker]="endCalendar"
-        placeholder="Choose the end date" required>
+      <input matInput formControlName="endDate" [matDatepicker]="endCalendar" placeholder="Choose the end date">
       <mat-datepicker-toggle matSuffix [for]="endCalendar"></mat-datepicker-toggle>
       <mat-datepicker #endCalendar></mat-datepicker>
-      <mat-error *ngIf="endDate.invalid">Please enter the End Date</mat-error>
+      <mat-error *ngIf="form.get('endDate').invalid">Please enter the End Date</mat-error>
     </mat-form-field>
     <!-- Participants search bar -->
     <mat-form-field>
-      <input (keydown.enter)="onAddParticipant(participant.value)" #participant="ngModel" matInput type="text"
-        placeholder="Add Participant" name="participant" [ngModel]="bet?.participants">
-      <mat-error *ngIf="participant.invalid">The email has not been found in the system</mat-error>
+      <input (keydown.enter)="onAddParticipant(form.get('participants').value)" matInput type="text"
+        placeholder="Add Participant" formControlName="participants">
+      <mat-error *ngIf="form.get('participants').invalid">The email has not been found in the system</mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">
       CREATE
     </button>
   </form>
 </mat-card>
+
+
+<!-- NON REACTIVE WAY
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveBet(betForm)" #betForm="ngForm" *ngIf="!isLoading">
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker>
+    </div>
+    <mat-form-field>
+      <input #title="ngModel" matInput type="text" placeholder="Title" formControlName="title" [ngModel]="bet?.title" >
+      <mat-error *ngIf="title.invalid">Please enter a Bet Title</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea #description="ngModel" matInput rows="6" placeholder="Description" formControlName="description"
+        [ngModel]="bet?.description" ></textarea>
+      <mat-error *ngIf="description.invalid">Please enter a Bet Description</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input #prize="ngModel" matInput type="text" placeholder="Prize" formControlName="prize" [ngModel]="bet?.prize" >
+      <mat-error *ngIf="prize.invalid">Please enter a Bet Prize</mat-error>
+    </mat-form-field>
+    <mat-slide-toggle #private="ngModel" formControlName="private" [ngModel]="bet?.private || false">Private</mat-slide-toggle>
+    <mat-slide-toggle #comments="ngModel" formControlName="comments" [ngModel]="bet?.comments || false">Allow comments
+    </mat-slide-toggle>
+    <mat-form-field>
+      <input matInput #startDate="ngModel" formControlName="startDate" [ngModel]="bet?.startDate"
+        [matDatepicker]="initCalendar" placeholder="Choose the start date" >
+      <mat-datepicker-toggle matSuffix [for]="initCalendar"></mat-datepicker-toggle>
+      <mat-datepicker #initCalendar></mat-datepicker>
+      <mat-error *ngIf="startDate.invalid">Please enter a Start Date</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput #endDate="ngModel" formControlName="endDate" [ngModel]="bet?.endDate" [matDatepicker]="endCalendar"
+        placeholder="Choose the end date" >
+      <mat-datepicker-toggle matSuffix [for]="endCalendar"></mat-datepicker-toggle>
+      <mat-datepicker #endCalendar></mat-datepicker>
+      <mat-error *ngIf="endDate.invalid">Please enter the End Date</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input (keydown.enter)="onAddParticipant(participant.value)" #participant="ngModel" matInput type="text"
+        placeholder="Add Participant" formControlName="participant" [ngModel]="bet?.participants">
+      <mat-error *ngIf="participant.invalid">The email has not been found in the system</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      CREATE
+    </button>
+  </form>
+</mat-card> -->

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { Bet } from "src/app/models/bet.model";
 import { BetsService } from "src/app/services/bets.service";
@@ -15,13 +15,32 @@ export class BetCreateComponent implements OnInit {
   bet: Bet;
   // Show/Hide the spinner
   isLoading = false;
+  form: FormGroup;
+
   private mode = "create";
   private betId: string;
 
   constructor(public betsService: BetsService, public route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.initializeReactiveForm();
     this.onSetMode();
+  }
+
+  initializeReactiveForm() {
+    this.form = new FormGroup({
+      // initialValue, attach validators or form control options,
+      title: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      description: new FormControl(null, { validators: [Validators.required] }),
+      startDate: new FormControl(null, { validators: [Validators.required] }),
+      endDate: new FormControl(null, { validators: [Validators.required] }),
+      private: new FormControl(false, { validators: [Validators.required] }),
+      comments: new FormControl(false, { validators: [Validators.required] }),
+      prize: new FormControl("", { validators: [] }),
+      participants: new FormControl([], { validators: [Validators.required] })
+    });
   }
 
   onSetMode() {
@@ -46,6 +65,16 @@ export class BetCreateComponent implements OnInit {
             prize: betData.prize,
             participants: betData.participants
           };
+          this.form.setValue({
+            title: this.bet.title,
+            description: this.bet.description,
+            startDate: this.bet.startDate,
+            endDate: this.bet.endDate,
+            private: this.bet.private,
+            comments: this.bet.comments,
+            prize: this.bet.prize,
+            participants: this.bet.participants
+          });
         });
       } else {
         this.mode = "create";
@@ -53,16 +82,17 @@ export class BetCreateComponent implements OnInit {
       }
     });
   }
-  onSaveBet(form: NgForm) {
-    if (form.invalid) return;
+
+  onSaveBet() {
+    if (this.form.invalid) return;
     this.isLoading = true;
-    const betSaved: Bet = this.onBuildBet(form.value);
+    const betSaved: Bet = this.onBuildBet(this.form.value);
     if (this.mode === "create") this.betsService.addBet(betSaved);
     else {
       betSaved.id = this.betId;
       this.betsService.updateBet(betSaved);
     }
-    form.resetForm();
+    this.form.reset();
   }
 
   /**
@@ -70,6 +100,7 @@ export class BetCreateComponent implements OnInit {
    * @param email String obtained from the form
    */
   onAddParticipant(email) {
+    console.log(email);
     event.preventDefault();
     this.localParticipantsList.push(email);
   }
