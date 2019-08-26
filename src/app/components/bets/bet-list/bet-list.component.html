@@ -1,4 +1,5 @@
-<mat-accordion multi="true" *ngIf="bets.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="bets.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let bet of bets">
     <mat-expansion-panel-header>
       {{bet.title}}
@@ -10,4 +11,4 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class="mat-body-1 info-text" *ngIf="bets.length <= 0 ">No bets added yet!</p>
+<p class="mat-body-1 info-text" *ngIf="bets.length <= 0 && isLoading">No bets added yet!</p>

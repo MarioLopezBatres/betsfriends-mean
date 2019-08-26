@@ -1,5 +1,6 @@
 <mat-card>
-  <form (submit)="onSaveBet(betForm)" #betForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSaveBet(betForm)" #betForm="ngForm" *ngIf="!isLoading">
     <!-- Text Inputs -->
     <mat-form-field>
       <input #title="ngModel" matInput type="text" placeholder="Title" name="title" [ngModel]="bet?.title" required>

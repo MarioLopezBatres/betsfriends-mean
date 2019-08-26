@@ -13,6 +13,8 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 export class BetCreateComponent implements OnInit {
   localParticipantsList: string[] = [];
   bet: Bet;
+  // Show/Hide the spinner
+  isLoading = false;
   private mode = "create";
   private betId: string;
 
@@ -28,9 +30,11 @@ export class BetCreateComponent implements OnInit {
       if (paramMap.has("betId")) {
         this.mode = "edit";
         this.betId = paramMap.get("betId");
+        this.isLoading = true;
         // ATTENTION: HOW TO RETURN FROM SUBSCRIBE (IN COMPONENT - NO SERVICE)
         // This keep the data after reloading the bet create/edit component
         this.betsService.getBet(this.betId).subscribe(betData => {
+          this.isLoading = true;
           this.bet = {
             id: betData._id,
             title: betData.title,
@@ -51,6 +55,7 @@ export class BetCreateComponent implements OnInit {
   }
   onSaveBet(form: NgForm) {
     if (form.invalid) return;
+    this.isLoading = true;
     const betSaved: Bet = this.onBuildBet(form.value);
     if (this.mode === "create") this.betsService.addBet(betSaved);
     else {

@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { Bet } from "../models/bet.model";
-import { stringify } from "@angular/core/src/render3/util";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +13,7 @@ export class BetsService {
   private bets: Bet[] = [];
   private betsUpdated = new Subject<Bet[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getBets() {
     this.http
@@ -74,6 +74,7 @@ export class BetsService {
         betAdded.id = id;
         this.bets.push(betAdded);
         this.betsUpdated.next([...this.bets]);
+        this.router.navigate(["/"]);
       });
   }
 
@@ -86,6 +87,7 @@ export class BetsService {
         updatedBets[oldBetIndex] = bet;
         this.bets = updatedBets;
         this.betsUpdated.next([...this.bets]);
+        this.router.navigate(["/"]);
       });
   }
 

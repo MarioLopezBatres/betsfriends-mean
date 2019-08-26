@@ -11,15 +11,19 @@ import { BetsService } from "src/app/services/bets.service";
 })
 export class BetListComponent implements OnInit, OnDestroy {
   bets: Bet[] = [];
+  isLoading = false;
+
   private betsSub: Subscription;
 
   constructor(public betsService: BetsService) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.betsService.getBets();
     this.betsSub = this.betsService
       .getBetUpdateListener()
       .subscribe((bets: Bet[]) => {
+        this.isLoading = false;
         this.bets = bets;
       });
   }
