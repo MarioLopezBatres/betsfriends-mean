@@ -38,6 +38,18 @@ Makes accessing MongoDB much easier. It uses schemas to define how the data look
 
 npm install --save mongoose
 
+### Mongoose Unique Validaor
+
+Add validation logic (not automatically)
+
+npm install --save mongoose-unique-validator
+
+### Bcrypt
+
+Hash the passwords
+
+npm install --save bcrypt
+
 ### Multer
 
 Allows to extract incoming files

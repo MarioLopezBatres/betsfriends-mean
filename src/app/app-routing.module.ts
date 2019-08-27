@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: "", component: BetListComponent },
   { path: "create", component: BetCreateComponent },
   { path: "edit/:betId", component: BetCreateComponent },
-  { path: "login", component: LoginComponent }
+  { path: "login", component: LoginComponent },
+  { path: "signup", component: LoginComponent }
 ];
 
 @NgModule({
