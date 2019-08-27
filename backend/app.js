@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -18,6 +19,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+// request to /images are allowed
+app.use("/images", express.static(path.join("backend/images")));
 
 // Solve CORS
 app.use((req, res, next) => {

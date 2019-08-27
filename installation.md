@@ -37,3 +37,9 @@ npm install --save body-parser
 Makes accessing MongoDB much easier. It uses schemas to define how the data looks like.
 
 npm install --save mongoose
+
+### Multer
+
+Allows to extract incoming files
+
+npm install --save multer

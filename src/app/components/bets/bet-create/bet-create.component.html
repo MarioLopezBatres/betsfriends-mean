@@ -5,7 +5,11 @@
     <!-- Image -->
     <div>
       <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-      <input type="file" #filePicker>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview">
+      <img [src]="imagePreview" [alt]="form.value.title"
+        *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid ">
     </div>
     <!-- Text Inputs -->
     <mat-form-field>
@@ -22,8 +26,6 @@
     </mat-form-field>
     <!-- Toogle Inputs -->
     <mat-slide-toggle formControlName="private">Private</mat-slide-toggle>
-    <mat-slide-toggle formControlName="comments">Allow comments
-    </mat-slide-toggle>
     <!-- Date Inputs-->
     <mat-form-field>
       <input matInput formControlName="startDate" [matDatepicker]="initCalendar" placeholder="Choose the start date">
@@ -72,8 +74,6 @@
       <mat-error *ngIf="prize.invalid">Please enter a Bet Prize</mat-error>
     </mat-form-field>
     <mat-slide-toggle #private="ngModel" formControlName="private" [ngModel]="bet?.private || false">Private</mat-slide-toggle>
-    <mat-slide-toggle #comments="ngModel" formControlName="comments" [ngModel]="bet?.comments || false">Allow comments
-    </mat-slide-toggle>
     <mat-form-field>
       <input matInput #startDate="ngModel" formControlName="startDate" [ngModel]="bet?.startDate"
         [matDatepicker]="initCalendar" placeholder="Choose the start date" >

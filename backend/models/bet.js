@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const betSchema = mongoose.Schema({
+  imagePath: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -21,11 +25,6 @@ const betSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
-  comments: {
-    type: Boolean,
-    default: false
-  },
-
   prize: {
     type: String,
     required: true
