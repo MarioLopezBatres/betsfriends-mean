@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = mongoose.Schema({
-  imagePath: {
-    type: String
-  },
   username: {
     type: String,
     required: true,
