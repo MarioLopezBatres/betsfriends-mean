@@ -13,7 +13,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatSlideToggleModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatPaginatorModule
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -43,6 +44,7 @@ import { BetListComponent } from "./components/bets/bet-list/bet-list.component"
     MatNativeDateModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
     HttpClientModule
   ],
   providers: [],

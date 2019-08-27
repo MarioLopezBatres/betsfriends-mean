@@ -12,36 +12,46 @@ import { identifierModuleUrl } from "@angular/compiler";
 })
 export class BetsService {
   private bets: Bet[] = [];
-  private betsUpdated = new Subject<Bet[]>();
+  private betsUpdated = new Subject<{ bets: Bet[]; betCount: number }>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getBets() {
+  getBets(betsPerPage: number, currentPage: number) {
+    // query names are set in the backend
+    const queryParams = `?pagesize=${betsPerPage}&page=${currentPage}`;
     this.http
-      .get<{ message: string; bets: any }>("http://localhost:3000/api/bets")
+      .get<{ message: string; bets: any; maxBets: number }>(
+        "http://localhost:3000/api/bets" + queryParams
+      )
       // In order to change the _id obtained from mongoose
       // It could be also solved by changed the field id to _id in the models
       // video 55
       .pipe(
         map(betData => {
-          return betData.bets.map(bet => {
-            return {
-              id: bet._id,
-              imagePath: bet.imagePath,
-              title: bet.title,
-              description: bet.description,
-              startDate: bet.startDate,
-              endDate: bet.endDate,
-              private: bet.private,
-              prize: bet.prize,
-              participants: bet.participants
-            };
-          });
+          return {
+            bets: betData.bets.map(bet => {
+              return {
+                id: bet._id,
+                imagePath: bet.imagePath,
+                title: bet.title,
+                description: bet.description,
+                startDate: bet.startDate,
+                endDate: bet.endDate,
+                private: bet.private,
+                prize: bet.prize,
+                participants: bet.participants
+              };
+            }),
+            maxBets: betData.maxBets
+          };
         })
       )
-      .subscribe(tansformedBets => {
-        this.bets = tansformedBets;
-        this.betsUpdated.next([...this.bets]);
+      .subscribe(tansformedBetData => {
+        this.bets = tansformedBetData.bets;
+        this.betsUpdated.next({
+          bets: [...this.bets],
+          betCount: tansformedBetData.maxBets
+        });
       });
   }
 
@@ -82,10 +92,6 @@ export class BetsService {
         betData
       )
       .subscribe(responseData => {
-        betAdded.id = responseData.bet.id;
-        betAdded.id = responseData.bet.imagePath;
-        this.bets.push(betAdded);
-        this.betsUpdated.next([...this.bets]);
         this.router.navigate(["/"]);
       });
   }
@@ -121,35 +127,11 @@ export class BetsService {
     this.http
       .put("http://localhost:3000/api/bets/" + betUpdated.id, betData)
       .subscribe(response => {
-        const updatedBets = [...this.bets];
-        const oldBetIndex = updatedBets.findIndex(b => b.id === betUpdated.id);
-        const bet: Bet = {
-          id: betUpdated.id,
-          imagePath: "",
-          title: betUpdated.title,
-          description: betUpdated.description,
-          prize: betUpdated.prize,
-          startDate: betUpdated.startDate,
-          endDate: betUpdated.endDate,
-          private: betUpdated.private,
-          participants: betUpdated.participants
-        };
-        updatedBets[oldBetIndex] = betUpdated;
-        this.bets = updatedBets;
-        this.betsUpdated.next([...this.bets]);
         this.router.navigate(["/"]);
       });
   }
 
   deleteBet(betId: string) {
-    this.http
-      .delete("http://localhost:3000/api/bets/" + betId)
-      .subscribe(() => {
-        const updatedBets = this.bets.filter(bet => {
-          bet.id !== betId;
-        });
-        this.bets = updatedBets;
-        this.betsUpdated.next([...this.bets]);
-      });
+    return this.http.delete("http://localhost:3000/api/bets/" + betId);
   }
 }

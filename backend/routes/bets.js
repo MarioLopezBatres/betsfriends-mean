@@ -81,11 +81,24 @@ router.put("/:id", multer({
 });
 
 router.get('', (req, res, next) => {
-  Bet.find()
+  const pageSize = +req.query.pagesize;
+  const currentPage = req.query.page;
+  const betQuery = Bet.find();
+  let fetchedBets;
+
+  if (pageSize && currentPage) {
+    betQuery.skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+  }
+  betQuery.find()
     .then(documents => {
+      fetchedBets = documents;
+      return Bet.count();
+    }).then(count => {
       res.status(200).json({
         message: 'Bets fetched successfully',
-        bets: documents
+        bets: fetchedBets,
+        maxBets: count
       });
     });
 });
