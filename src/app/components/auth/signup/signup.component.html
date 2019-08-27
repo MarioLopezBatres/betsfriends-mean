@@ -1,18 +1,27 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSignUp(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSignUp()" *ngIf="!isLoading">
+    <!-- Image -->
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview">
+      <img [src]="imagePreview" [alt]="form.value.title"
+        *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid ">
+    </div>
+    <!-- Text Inputs -->
     <mat-form-field>
-      <input matInput name="username" ngModel type="text" placeholder="Username" #usernameInput="ngModel" required>
-      <mat-error *ngIf="usernameInput.invalid">Please enter a valid username</mat-error>
+      <input matInput type="text" placeholder="Username" formControlName="username">
+      <mat-error *ngIf="form.get('username').invalid">Please enter a valid username</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput name="email" ngModel type="email" placeholder="Email address" #emailInput="ngModel" required
-        email>
-      <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
+      <input matInput formControlName="email" type="email" placeholder="Email address">
+      <mat-error *ngIf="form.get('email').invalid">Please enter a valid email</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" name="password" ngModel placeholder="Password" #passwordInput="ngModel" required>
-      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password</mat-error>
+      <input matInput formControlName="password" type="password" placeholder="Password">
+      <mat-error *ngIf="form.get('password').invalid">Please enter a valid password</mat-error>
       <button mat-raised-button color="primary" type="submit">SIGN UP</button>
     </mat-form-field>
   </form>
