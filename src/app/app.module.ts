@@ -22,18 +22,23 @@ import { AppComponent } from "./app.component";
 import { BetCreateComponent } from "./components/bets/bet-create/bet-create.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { BetListComponent } from "./components/bets/bet-list/bet-list.component";
+import { LoginComponent } from "./components/auth/login/login.component";
+import { SignupComponent } from "./components/auth/signup/signup.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     BetCreateComponent,
     HeaderComponent,
-    BetListComponent
+    BetListComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatCardModule,
