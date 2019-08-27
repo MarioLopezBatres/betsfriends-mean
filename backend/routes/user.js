@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "backend/images");
+    cb(error, "backend/images/users");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -37,7 +37,7 @@ router.post("/signup", multer({
     .then(hash => {
       const url = req.protocol + "://" + req.get("host");
       const user = new User({
-        imagePath: url + "/images/" + req.file.filename,
+        imagePath: url + "/images/users" + req.file.filename,
         username: req.body.username,
         email: req.body.email,
         password: hash

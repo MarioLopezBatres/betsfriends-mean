@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "backend/images");
+    cb(error, "backend/images/bets");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -38,7 +38,7 @@ router.post("", multer({
     private: req.body.private,
     prize: req.body.prize,
     participants: req.body.participants,
-    imagePath: url + "/images/" + req.file.filename
+    imagePath: url + "/images/bets/" + req.file.filename
   });
   // When saving the Bet is is required to update the ID cause it was created as null
   bet.save().then(createdBet => {
@@ -58,7 +58,7 @@ router.put("/:id", multer({
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
-    imagePath = url + "/images/" + req.file.filename;
+    imagePath = url + "/images/bets/" + req.file.filename;
   }
   const bet = new Bet({
     _id: req.body.id,
