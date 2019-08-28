@@ -10,16 +10,31 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   createUser(username: string, email: string, password: string, image: File) {
-    const userData = new FormData();
-    userData.append("image", image, email);
-    userData.append("username", username);
-    userData.append("email", email);
-    userData.append("password", password);
+    const authData = new FormData();
+    authData.append("image", image, email);
+    authData.append("username", username);
+    authData.append("email", email);
+    authData.append("password", password);
     this.http
-      .post("http://localhost:3000/api/user/signup", userData)
+      .post("http://localhost:3000/api/user/signup", authData)
       .subscribe(response => {
         console.log(response);
         this.router.navigate(["/login"]);
+      });
+  }
+
+  login(email: string, password: string) {
+    // ATTENTION! NEEDS TO CREATE TWO MODLES; USER AND AUTH
+    const authData: AuthData = {
+      imagePath: "",
+      username: "",
+      email: email,
+      password: password
+    };
+    this.http
+      .post("http://localhost:3000/api/user/login", authData)
+      .subscribe(response => {
+        console.log(response);
       });
   }
 }

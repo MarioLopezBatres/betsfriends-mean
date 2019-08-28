@@ -50,6 +50,12 @@ Hash the passwords
 
 npm install --save bcrypt
 
+### JSONWebToken
+
+Helps with the creation and validation of tokens
+
+npm install --jsonwebtoken
+
 ### Multer
 
 Allows to extract incoming files
