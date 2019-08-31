@@ -5,7 +5,6 @@ import { map } from "rxjs/operators";
 
 import { Bet } from "../models/bet.model";
 import { Router } from "@angular/router";
-import { identifierModuleUrl } from "@angular/compiler";
 
 @Injectable({
   providedIn: "root"

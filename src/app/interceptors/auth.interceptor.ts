@@ -1,0 +1,23 @@
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler
+} from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { AuthService } from "../services/auth.service";
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const authToken = this.authService.getToken();
+    const authRequest = req.clone({
+      // Set only adds a new header to the previous ones
+      // The name is authorization because check-auth.js defines req.headers.authorization
+      // This new header must be allowed in app.js
+      headers: req.headers.set("Authorization", "Bearer " + authToken)
+    });
+    return next.handle(authRequest);
+  }
+}

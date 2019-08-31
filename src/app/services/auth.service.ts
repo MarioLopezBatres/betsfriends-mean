@@ -7,7 +7,13 @@ import { Router } from "@angular/router";
   providedIn: "root"
 })
 export class AuthService {
+  private token: string;
+
   constructor(private http: HttpClient, private router: Router) {}
+
+  getToken() {
+    return this.token;
+  }
 
   createUser(username: string, email: string, password: string, image: File) {
     const authData = new FormData();
@@ -32,9 +38,10 @@ export class AuthService {
       password: password
     };
     this.http
-      .post("http://localhost:3000/api/user/login", authData)
+      .post<{ token: string }>("http://localhost:3000/api/user/login", authData)
       .subscribe(response => {
-        console.log(response);
+        const token = response.token;
+        this.token = token;
       });
   }
 }

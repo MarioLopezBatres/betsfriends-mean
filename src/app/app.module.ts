@@ -2,7 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import {
   MatInputModule,
@@ -24,6 +24,8 @@ import { HeaderComponent } from "./components/header/header.component";
 import { BetListComponent } from "./components/bets/bet-list/bet-list.component";
 import { LoginComponent } from "./components/auth/login/login.component";
 import { SignupComponent } from "./components/auth/signup/signup.component";
+// Every outgoing request will go through AutInterceptor
+import { AuthInterceptor } from "./interceptors/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { SignupComponent } from "./components/auth/signup/signup.component";
     MatPaginatorModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
