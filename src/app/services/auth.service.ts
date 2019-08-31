@@ -8,11 +8,16 @@ import { Subject } from "rxjs";
   providedIn: "root"
 })
 export class AuthService {
+  private isAuthenticated = false;
   private token: string;
   // Push the authentication information to the components
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getIsAuth() {
+    return this.isAuthenticated;
+  }
 
   getToken() {
     return this.token;
@@ -50,7 +55,19 @@ export class AuthService {
       .subscribe(response => {
         const token = response.token;
         this.token = token;
-        this.authStatusListener.next(true);
+        if (token) {
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+          this.router.navigate(["/"]);
+        }
       });
+  }
+
+  onLogout() {
+    this.token = null;
+    this.isAuthenticated = false;
+    // Attention! How to push a new value to the components
+    this.authStatusListener.next(false);
+    this.router.navigate(["/"]);
   }
 }

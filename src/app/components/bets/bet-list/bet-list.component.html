@@ -8,7 +8,7 @@
       {{bet.title}}
     </mat-expansion-panel-header>
     <p>{{bet.description}}</p>
-    <mat-action-row>
+    <mat-action-row *ngIf="userIsAuthethenticated">
       <a mat-button color="primary" [routerLink]="['/edit', bet.id]">EDIT</a>
       <button mat-button color="warn" (click)="onDelete(bet.id)">DELETE</button>
     </mat-action-row>

@@ -17,6 +17,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.checkAuthentication();
   }
 
+  onLogout() {
+    this.authService.onLogout();
+  }
+
   checkAuthentication() {
     // ATTENTION! How to create a subscription to get update values
     this.authListenerSubs = this.authService

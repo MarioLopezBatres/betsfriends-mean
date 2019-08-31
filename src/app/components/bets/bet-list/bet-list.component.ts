@@ -4,6 +4,7 @@ import { PageEvent } from "@angular/material";
 
 import { Bet } from "src/app/models/bet.model";
 import { BetsService } from "src/app/services/bets.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-bet-list",
@@ -17,13 +18,23 @@ export class BetListComponent implements OnInit, OnDestroy {
   betsPerPage = 2;
   currentPage = 1;
   pageSizeOptions = [1, 2, 5, 10];
+  userIsAuthethenticated = false;
 
   private betsSub: Subscription;
+  private authStatusSub: Subscription;
 
-  constructor(public betsService: BetsService) {}
+  constructor(
+    public betsService: BetsService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
+    this.getBets();
+    this.getAuthStatus();
+  }
+
+  getBets() {
     this.betsService.getBets(this.betsPerPage, this.currentPage);
     this.betsSub = this.betsService
       .getBetUpdateListener()
@@ -31,6 +42,16 @@ export class BetListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.totalBets = betData.betCount;
         this.bets = betData.bets;
+      });
+  }
+
+  getAuthStatus() {
+    // It is required to make both calls to update the value in this component in order to be sure that it will happen
+    this.userIsAuthethenticated = this.authService.getIsAuth();
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userIsAuthethenticated = isAuthenticated;
       });
   }
 
@@ -51,5 +72,6 @@ export class BetListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.betsSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 }
