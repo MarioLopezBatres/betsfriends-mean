@@ -1,12 +1,15 @@
 <mat-toolbar color="primary"><span routerLink="/">BetsFriends</span>
   <span class="spacer"></span>
-  <ul>
+  <ul *ngIf="userIsAuthenticated">
     <li><a mat-button routerLink="/create" routerLinkActive="mat-accent">NEW BET</a></li>
   </ul>
-  <ul>
+  <ul *ngIf="!userIsAuthenticated">
     <li><a mat-button routerLink="/login" routerLinkActive="mat-accent">LOGIN</a></li>
   </ul>
-  <ul>
+  <ul *ngIf="!userIsAuthenticated">
     <li><a mat-button routerLink="/signup" routerLinkActive="mat-accent">SIGN UP</a></li>
+  </ul>
+  <ul *ngIf="userIsAuthenticated">
+    <button mat-button>LOGOUT</button>
   </ul>
 </mat-toolbar>

@@ -2,17 +2,25 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { AuthData } from "../models/auth.model";
 import { Router } from "@angular/router";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
   private token: string;
+  // Push the authentication information to the components
+  private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
     return this.token;
+  }
+
+  getAuthStatusListener() {
+    // Return as observable because I want to be able to lsiten from components but not to change it
+    return this.authStatusListener.asObservable();
   }
 
   createUser(username: string, email: string, password: string, image: File) {
@@ -42,6 +50,7 @@ export class AuthService {
       .subscribe(response => {
         const token = response.token;
         this.token = token;
+        this.authStatusListener.next(true);
       });
   }
 }
