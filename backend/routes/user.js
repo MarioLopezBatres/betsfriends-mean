@@ -91,7 +91,8 @@ router.post("/login", (req, res, next) => {
       });
       // No need to return cause it is the last statement
       res.status(200).json({
-        token: token
+        token: token,
+        expiresIn: 3600
       });
     }).catch(err => {
       console.log(err);
