@@ -92,10 +92,11 @@ router.post("/login", (req, res, next) => {
       // No need to return cause it is the last statement
       res.status(200).json({
         token: token,
-        expiresIn: 3600
+        expiresIn: 3600,
+        // You can get it from token but decoding the token presents a worse performance
+        userId: fetchedUser._id
       });
     }).catch(err => {
-      console.log(err);
       return res.status(401).json({
         message: "Auth failed"
       });

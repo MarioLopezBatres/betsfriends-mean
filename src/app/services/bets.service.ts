@@ -38,18 +38,19 @@ export class BetsService {
                 endDate: bet.endDate,
                 private: bet.private,
                 prize: bet.prize,
-                participants: bet.participants
+                participants: bet.participants,
+                creator: bet.creator
               };
             }),
             maxBets: betData.maxBets
           };
         })
       )
-      .subscribe(tansformedBetData => {
-        this.bets = tansformedBetData.bets;
+      .subscribe(transformedBetData => {
+        this.bets = transformedBetData.bets;
         this.betsUpdated.next({
           bets: [...this.bets],
-          betCount: tansformedBetData.maxBets
+          betCount: transformedBetData.maxBets
         });
       });
   }
@@ -62,6 +63,7 @@ export class BetsService {
   getBet(id: string) {
     return this.http.get<{
       _id: string;
+      creator: string;
       title: string;
       description: string;
       startDate: Date;
@@ -113,6 +115,8 @@ export class BetsService {
     } else {
       betData = {
         id: betUpdated.id,
+        // Creator to null to avoid posting information in the browers
+        creator: null,
         imagePath: image,
         title: betUpdated.title,
         description: betUpdated.description,

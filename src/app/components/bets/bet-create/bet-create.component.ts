@@ -61,6 +61,7 @@ export class BetCreateComponent implements OnInit {
           this.isLoading = false;
           this.bet = {
             id: betData._id,
+            creator: betData.creator,
             title: betData.title,
             description: betData.description,
             startDate: betData.startDate,
@@ -129,6 +130,7 @@ export class BetCreateComponent implements OnInit {
   onBuildBet(formValues) {
     let betBuilt: Bet = {
       id: null,
+      creator: null,
       imagePath: null,
       title: formValues.title,
       description: formValues.description,

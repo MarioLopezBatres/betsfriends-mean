@@ -39,7 +39,9 @@ router.post("", checkAuth, multer({
     private: req.body.private,
     prize: req.body.prize,
     participants: req.body.participants,
-    imagePath: url + "/images/bets/" + req.file.filename
+    imagePath: url + "/images/bets/" + req.file.filename,
+    // Added in check-auth.js
+    creator: req.userData.userId
   });
   // When saving the Bet is is required to update the ID cause it was created as null
   bet.save().then(createdBet => {
@@ -63,6 +65,7 @@ router.put("/:id", checkAuth, multer({
   }
   const bet = new Bet({
     _id: req.body.id,
+    creator: req.userData.creator,
     title: req.body.title,
     description: req.body.description,
     startDate: req.body.startDate,
@@ -73,10 +76,15 @@ router.put("/:id", checkAuth, multer({
     imagePath: imagePath
   })
   Bet.updateOne({
-    _id: req.params.id
+    _id: req.params.id,
+    creator: req.userData.userId
   }, bet).then(result => {
-    res.status(200).json({
-      message: "Update successful!"
+    if (result.nModified > 0)
+      res.status(200).json({
+        message: "Update successful!"
+      })
+    else res.status(401).json({
+      message: "Not authorized!"
     })
   });
 });
@@ -118,12 +126,16 @@ router.get("/:id", (req, res, next) => {
 
 router.delete("/:id", checkAuth, (req, res, next) => {
   Bet.deleteOne({
-    _id: req.params.id
+    _id: req.params.id,
+    creator: req.userData.userId
   }).then(result => {
-    console.log(result);
-    res.status(200).json({
-      message: "Bet deleted!"
-    });
+    if (result.n > 0)
+      res.status(200).json({
+        message: "Deletion successful!"
+      })
+    else res.status(401).json({
+      message: "Not authorized!"
+    })
   })
 })
 

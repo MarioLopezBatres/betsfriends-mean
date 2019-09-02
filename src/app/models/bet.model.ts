@@ -1,5 +1,6 @@
 export interface Bet {
   id: string;
+  creator: string;
   title: string;
   imagePath: string;
   description: string;

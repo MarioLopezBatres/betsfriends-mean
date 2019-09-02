@@ -19,6 +19,7 @@ export class BetListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   pageSizeOptions = [1, 2, 5, 10];
   userIsAuthethenticated = false;
+  userId: string;
 
   private betsSub: Subscription;
   private authStatusSub: Subscription;
@@ -32,6 +33,12 @@ export class BetListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.getBets();
     this.getAuthStatus();
+    this.getUser();
+  }
+
+  getUser() {
+    // Attention! Update also in getAuthStatus()
+    this.userId = this.authService.getUserId();
   }
 
   getBets() {
@@ -52,6 +59,7 @@ export class BetListComponent implements OnInit, OnDestroy {
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthethenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
   }
 
