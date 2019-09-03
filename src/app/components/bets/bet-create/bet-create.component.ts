@@ -1,17 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { Bet } from "src/app/models/bet.model";
 import { BetsService } from "src/app/services/bets.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { mimeType } from "../../../validators/mime-type.validator";
+import { Subscription } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-bet-create",
   templateUrl: "./bet-create.component.html",
   styleUrls: ["./bet-create.component.css"]
 })
-export class BetCreateComponent implements OnInit {
+export class BetCreateComponent implements OnInit, OnDestroy {
   localParticipantsList: string[] = [];
   bet: Bet;
   // Show/Hide the spinner
@@ -21,10 +23,20 @@ export class BetCreateComponent implements OnInit {
 
   private mode = "create";
   private betId: string;
+  private authStatusSub: Subscription;
 
-  constructor(public betsService: BetsService, public route: ActivatedRoute) {}
+  constructor(
+    public betsService: BetsService,
+    public route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe(authStatus => {
+        this.isLoading = false;
+      });
     this.initializeReactiveForm();
     this.onSetMode();
   }
@@ -141,5 +153,9 @@ export class BetCreateComponent implements OnInit {
       participants: this.localParticipantsList
     };
     return betBuilt;
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }

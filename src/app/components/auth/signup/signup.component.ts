@@ -1,24 +1,30 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { mimeType } from "src/app/validators/mime-type.validator";
 import { allSettled } from "q";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-signup",
   templateUrl: "./signup.component.html",
   styleUrls: ["./signup.component.css"]
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   isLoading = false;
+  private authStatusSub: Subscription;
   form: FormGroup;
   imagePreview: string;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe(authStatus => {
+        this.isLoading = false;
+      });
     this.initializeReactiveForm();
-    this.isLoading = false;
   }
 
   initializeReactiveForm() {
@@ -62,5 +68,9 @@ export class SignupComponent implements OnInit {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }

@@ -13,7 +13,8 @@
       <button mat-button color="warn" (click)="onDelete(bet.id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
+
 </mat-accordion>
 <mat-paginator [length]="totalBets" [pageSize]="betsPerPage" [pageSizeOptions]="pageSizeOptions"
   (page)="onChangedPage($event)" *ngIf="bets.length"></mat-paginator>
-<p class="mat-body-1 info-text" *ngIf="bets.length <= 0 && isLoading">No bets added yet!</p>
+<p class="mat-body-1 info-text" *ngIf="bets.length <= 0 && !isLoading">No bets added yet!</p>

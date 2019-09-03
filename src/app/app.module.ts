@@ -14,7 +14,8 @@ import {
   MatNativeDateModule,
   MatSlideToggleModule,
   MatProgressSpinnerModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatDialogModule
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -26,6 +27,8 @@ import { LoginComponent } from "./components/auth/login/login.component";
 import { SignupComponent } from "./components/auth/signup/signup.component";
 // Every outgoing request will go through AutInterceptor
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
+import { ErrorInterceptor } from "./interceptors/error.interceptor";
+import { ErrorComponent } from "./components/error/error.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
     HeaderComponent,
     BetListComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -52,11 +56,14 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatDialogModule,
     HttpClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule {}

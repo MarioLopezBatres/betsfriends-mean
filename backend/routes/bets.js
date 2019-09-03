@@ -45,14 +45,19 @@ router.post("", checkAuth, multer({
   });
   // When saving the Bet is is required to update the ID cause it was created as null
   bet.save().then(createdBet => {
-    res.status(201).json({
-      message: "Bet added successfully",
-      bet: {
-        ...createdBet,
-        id: createdBet._id
-      }
+      res.status(201).json({
+        message: "Bet added successfully",
+        bet: {
+          ...createdBet,
+          id: createdBet._id
+        }
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Creating a bet failed"
+      });
     });
-  });
 });
 
 router.put("/:id", checkAuth, multer({
@@ -76,17 +81,22 @@ router.put("/:id", checkAuth, multer({
     imagePath: imagePath
   })
   Bet.updateOne({
-    _id: req.params.id,
-    creator: req.userData.userId
-  }, bet).then(result => {
-    if (result.nModified > 0)
-      res.status(200).json({
-        message: "Update successful!"
-      })
-    else res.status(401).json({
-      message: "Not authorized!"
+      _id: req.params.id,
+      creator: req.userData.userId
+    }, bet).then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({
+          message: "Update successful!"
+        })
+      } else res.status(401).json({
+        message: "Not authorized!"
+      });
     })
-  });
+    .catch(error => {
+      res.status(500).json({
+        message: "Couldn't update bet!"
+      });
+    });
 });
 
 router.get('', (req, res, next) => {
@@ -109,6 +119,11 @@ router.get('', (req, res, next) => {
         bets: fetchedBets,
         maxBets: count
       });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Fetching bets failed"
+      });
     });
 });
 
@@ -121,6 +136,10 @@ router.get("/:id", (req, res, next) => {
         message: "Bet not found!"
       });
     }
+  }).catch(error => {
+    res.status(500).json({
+      message: "Fetching bet failed"
+    });
   });
 });
 
@@ -136,7 +155,11 @@ router.delete("/:id", checkAuth, (req, res, next) => {
     else res.status(401).json({
       message: "Not authorized!"
     })
-  })
+  }).catch(error => {
+    res.status(500).json({
+      message: "Removing bet failed"
+    });
+  });
 })
 
 module.exports = router;

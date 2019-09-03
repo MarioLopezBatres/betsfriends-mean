@@ -72,10 +72,14 @@ export class BetListComponent implements OnInit, OnDestroy {
 
   onDelete(betId: string) {
     this.isLoading = true;
-
-    this.betsService.deleteBet(betId).subscribe(() => {
-      this.betsService.getBets(this.betsPerPage, this.currentPage);
-    });
+    this.betsService.deleteBet(betId).subscribe(
+      () => {
+        this.betsService.getBets(this.betsPerPage, this.currentPage);
+      },
+      error => {
+        this.isLoading = false;
+      }
+    );
   }
 
   ngOnDestroy() {
