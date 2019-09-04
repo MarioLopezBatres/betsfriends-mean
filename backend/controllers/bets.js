@@ -53,7 +53,7 @@ exports.updateBet = (req, res, next) => {
       _id: req.params.id,
       creator: req.userData.userId
     }, bet).then(result => {
-      if (result.nModified > 0) {
+      if (result.n > 0) {
         res.status(200).json({
           message: "Update successful!"
         })
