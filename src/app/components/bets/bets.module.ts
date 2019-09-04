@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
-import { BetCreateComponent } from "../components/bets/bet-create/bet-create.component";
-import { BetListComponent } from "../components/bets/bet-list/bet-list.component";
+import { BetCreateComponent } from "./bet-create/bet-create.component";
+import { BetListComponent } from "./bet-list/bet-list.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { AngularMaterialModule } from "./angular-material.module";
+import { AngularMaterialModule } from "../../angular-material.module";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 

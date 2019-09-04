@@ -10,9 +10,8 @@ import { HeaderComponent } from "./components/header/header.component";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { ErrorComponent } from "./components/error/error.component";
-import { AngularMaterialModule } from "./modules/angular-material.module";
-import { BetsModule } from "./modules/bets.module";
-import { AuthModule } from "./modules/auth.module";
+import { AngularMaterialModule } from "./angular-material.module";
+import { BetsModule } from "./components/bets/bets.module";
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, ErrorComponent],
@@ -22,8 +21,7 @@ import { AuthModule } from "./modules/auth.module";
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
-    BetsModule,
-    AuthModule
+    BetsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
