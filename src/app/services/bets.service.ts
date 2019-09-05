@@ -5,6 +5,9 @@ import { map } from "rxjs/operators";
 
 import { Bet } from "../models/bet.model";
 import { Router } from "@angular/router";
+import { environment } from "../../environments/environment";
+
+const BACKEND_URL = environment.apiUrl + "/bets/";
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +23,7 @@ export class BetsService {
     const queryParams = `?pagesize=${betsPerPage}&page=${currentPage}`;
     this.http
       .get<{ message: string; bets: any; maxBets: number }>(
-        "http://localhost:3000/api/bets" + queryParams
+        BACKEND_URL + queryParams
       )
       // In order to change the _id obtained from mongoose
       // It could be also solved by changed the field id to _id in the models
@@ -72,7 +75,7 @@ export class BetsService {
       participants: [];
       prize: string;
       imagePath: string;
-    }>("http://localhost:3000/api/bets/" + id);
+    }>(BACKEND_URL + id);
   }
 
   addBet(betAdded: Bet, image: File) {
@@ -88,10 +91,7 @@ export class BetsService {
     }
     betData.append("image", image, betAdded.title);
     this.http
-      .post<{ message: string; bet: Bet }>(
-        "http://localhost:3000/api/bets",
-        betData
-      )
+      .post<{ message: string; bet: Bet }>(BACKEND_URL, betData)
       .subscribe(responseData => {
         this.router.navigate(["/"]);
       });
@@ -127,14 +127,12 @@ export class BetsService {
         participants: betUpdated.participants
       };
     }
-    this.http
-      .put("http://localhost:3000/api/bets/" + betUpdated.id, betData)
-      .subscribe(response => {
-        this.router.navigate(["/"]);
-      });
+    this.http.put(BACKEND_URL + betUpdated.id, betData).subscribe(response => {
+      this.router.navigate(["/"]);
+    });
   }
 
   deleteBet(betId: string) {
-    return this.http.delete("http://localhost:3000/api/bets/" + betId);
+    return this.http.delete(BACKEND_URL + betId);
   }
 }

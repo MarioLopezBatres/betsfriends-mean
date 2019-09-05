@@ -56,7 +56,7 @@ exports.userLogin = (req, res, next) => {
         imagePath: fetchedUser.imagePath,
         username: fetchedUser.username,
         email: fetchedUser.email
-      }, '+HoF+Sj+lmRCo@ODssWDNlauB4SRkLl1dvooYCg8dslLlNlZfVnVFVoro2wGeIiZF38GBnJ5D8CdlTH02tIRCig==', {
+      }, process.env.JWT_KEY, {
         expiresIn: "1h"
       });
       // No need to return cause it is the last statement
