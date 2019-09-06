@@ -1,4 +1,19 @@
-<mat-toolbar color="primary"><span routerLink="/">BetsFriends</span>
+<mat-toolbar color="primary">
+  <ul>
+    <li><a mat-button routerLink="/active-bets">BETSFRIENDS</a></li>
+  </ul>
+  <ul>
+    <li><a mat-button routerLink="/active-bets" routerLinkActive="mat-accent">ACTIVE</a></li>
+  </ul>
+  <ul>
+    <li><a mat-button routerLink="/public-bets" routerLinkActive="mat-accent">PUBLIC</a></li>
+  </ul>
+  <ul>
+    <li><a mat-button routerLink="/private-bets" routerLinkActive="mat-accent">MY PRIVATE</a></li>
+  </ul>
+  <ul>
+    <li><a mat-button routerLink="/finished-bets" routerLinkActive="mat-accent">FINISHED</a></li>
+  </ul>
   <span class="spacer"></span>
   <ul *ngIf="userIsAuthenticated">
     <li><a mat-button routerLink="/create" routerLinkActive="mat-accent">NEW BET</a></li>

@@ -72,9 +72,9 @@ exports.updateBet = (req, res, next) => {
 exports.getBets = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = req.query.page;
-  const betQuery = Bet.find();
+  const betMode = req.query.mode;
+  betQuery = Bet.find();
   let fetchedBets;
-
   if (pageSize && currentPage) {
     betQuery.skip(pageSize * (currentPage - 1))
       .limit(pageSize);

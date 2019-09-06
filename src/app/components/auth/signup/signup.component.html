@@ -12,6 +12,10 @@
     </div>
     <!-- Text Inputs -->
     <mat-form-field>
+      <input matInput type="text" placeholder="Full Name" formControlName="fullname">
+      <mat-error *ngIf="form.get('fullname').invalid">Please enter a valid full name</mat-error>
+    </mat-form-field>
+    <mat-form-field>
       <input matInput type="text" placeholder="Username" formControlName="username">
       <mat-error *ngIf="form.get('username').invalid">Please enter a valid username</mat-error>
     </mat-form-field>

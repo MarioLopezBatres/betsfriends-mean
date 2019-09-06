@@ -3,10 +3,35 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { BetListComponent } from "./components/bets/bet-list/bet-list.component";
 import { BetCreateComponent } from "./components/bets/bet-create/bet-create.component";
-import { AuthGuard } from "./components/guards/auth.guards";
+import { AuthGuard } from "./guards/auth.guards";
 
 const routes: Routes = [
-  { path: "", component: BetListComponent },
+  {
+    path: "",
+    component: BetListComponent,
+    children: [
+      {
+        path: "active-bets",
+        component: BetListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "private-bets",
+        component: BetListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "public-bets",
+        component: BetListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "finished-bets",
+        component: BetListComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
+  },
   { path: "create", component: BetCreateComponent, canActivate: [AuthGuard] },
   {
     path: "edit/:betId",

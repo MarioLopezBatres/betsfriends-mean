@@ -39,15 +39,22 @@ export class AuthService {
     return this.userId;
   }
 
-  createUser(username: string, email: string, password: string, image: File) {
+  createUser(
+    fullname: string,
+    username: string,
+    email: string,
+    password: string,
+    image: File
+  ) {
     const authData = new FormData();
     authData.append("image", image, email);
+    authData.append("fullname", fullname);
     authData.append("username", username);
     authData.append("email", email);
     authData.append("password", password);
     this.http.post(BACKEND_URL + "/signup", authData).subscribe(
       () => {
-        this.router.navigate(["/login"]);
+        this.router.navigate(["/auth/login"]);
       },
       error => {
         this.authStatusListener.next(false);
@@ -59,6 +66,7 @@ export class AuthService {
     // ATTENTION! NEEDS TO CREATE TWO MODLES; USER AND AUTH
     const authData: AuthData = {
       imagePath: "",
+      fullname: "",
       username: "",
       email: email,
       password: password
@@ -121,7 +129,6 @@ export class AuthService {
   }
 
   private setAuthTimer(duration: number) {
-    console.log("Setting timer: " + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000);

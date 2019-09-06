@@ -9,6 +9,7 @@ exports.createUser = (req, res, next) => {
       const url = req.protocol + "://" + req.get("host");
       const user = new User({
         imagePath: url + "/images/users/" + req.file.filename,
+        fullname: req.body.fullname,
         username: req.body.username,
         email: req.body.email,
         password: hash

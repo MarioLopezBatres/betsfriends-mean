@@ -34,6 +34,9 @@ export class SignupComponent implements OnInit, OnDestroy {
         validators: [Validators.required],
         asyncValidators: [mimeType]
       }),
+      fullname: new FormControl(null, {
+        validators: [Validators.required]
+      }),
       username: new FormControl(null, {
         validators: [Validators.required]
       }),
@@ -50,6 +53,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return;
     this.isLoading = true;
     this.authService.createUser(
+      this.form.value.fullname,
       this.form.value.username,
       this.form.value.email,
       this.form.value.password,

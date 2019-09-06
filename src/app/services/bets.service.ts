@@ -20,7 +20,7 @@ export class BetsService {
 
   getBets(betsPerPage: number, currentPage: number) {
     // query names are set in the backend
-    const queryParams = `?pagesize=${betsPerPage}&page=${currentPage}`;
+    const queryParams = `?mode=${this.router.url}&pagesize=${betsPerPage}&page=${currentPage}`;
     this.http
       .get<{ message: string; bets: any; maxBets: number }>(
         BACKEND_URL + queryParams
