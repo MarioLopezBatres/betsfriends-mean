@@ -1,4 +1,11 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<form (keyup.enter)="onSearch(searchForm)" #searchForm="ngForm">
+  <mat-form-field>
+    <input matInput name="search" ngModel type="text" placeholder="Search" #searchInput="ngModel" required>
+  </mat-form-field>
+</form>
+
 <mat-accordion multi="true" *ngIf="bets.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let bet of bets">
     <div class="bet-image">

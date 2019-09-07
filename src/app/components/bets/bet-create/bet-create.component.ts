@@ -32,15 +32,21 @@ export class BetCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.setAuthStatusListener();
+    this.initializeReactiveForm();
+    this.onSetMode();
+  }
+
+  /** Creates a subscription to update isLoading when there is nothing logged in */
+  setAuthStatusListener() {
     this.authStatusSub = this.authService
       .getAuthStatusListener()
       .subscribe(authStatus => {
         this.isLoading = false;
       });
-    this.initializeReactiveForm();
-    this.onSetMode();
   }
 
+  /** Initializes the form and its attributes and properties */
   initializeReactiveForm() {
     this.form = new FormGroup({
       // initialValue, attach validators or form control options,
@@ -60,6 +66,7 @@ export class BetCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Define the mode in which the component will be displayed and its behaviour; create/edit */
   onSetMode() {
     // Attention: REPEAT FOR SHOWING THE HEADER
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -101,6 +108,10 @@ export class BetCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Sets the file updated thorugh the input, stores the src in imagePreview, and shows a preview of it.
+   * @param event The value of image input has changed
+   */
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     // patchValue allows to targe a single control. Set value is for the whole form
@@ -113,6 +124,9 @@ export class BetCreateComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(file);
   }
 
+  /**
+   * Creates or updates the bets depending on the mode of the component
+   */
   onSaveBet() {
     if (this.form.invalid) return;
     this.isLoading = true;
@@ -127,7 +141,7 @@ export class BetCreateComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if the email searched is the email of one of the emails stored in the database
+   * Checks if the email searched is the email of one of the emails stored in the database
    * @param email String obtained from the form
    */
   onAddParticipant(email) {
@@ -136,7 +150,7 @@ export class BetCreateComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Build a new Bet using the data obtained from the form in order to send it to addBet ot the service
+   * Builds a new Bet using the data obtained from the form in order to send it to addBet ot the service
    * @param formValues Values provided by the create-bet form
    */
   onBuildBet(formValues) {

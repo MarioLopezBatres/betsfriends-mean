@@ -5,6 +5,7 @@ import { PageEvent } from "@angular/material";
 import { Bet } from "src/app/models/bet.model";
 import { BetsService } from "src/app/services/bets.service";
 import { AuthService } from "src/app/services/auth.service";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-bet-list",
@@ -36,11 +37,13 @@ export class BetListComponent implements OnInit, OnDestroy {
     this.getUser();
   }
 
+  /** Extracts the token auth information sent by the backend */
   getUser() {
     // Attention! Update also in getAuthStatus()
     this.userId = this.authService.getUserId();
   }
 
+  /** Get the bets information depending on the pagination data, skipping the already shown ones */
   getBets() {
     this.betsService.getBets(this.betsPerPage, this.currentPage);
     this.betsSub = this.betsService
@@ -85,5 +88,10 @@ export class BetListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.betsSub.unsubscribe();
     this.authStatusSub.unsubscribe();
+  }
+
+  onSearch(form: NgForm) {
+    // this.betsService.searchBets(form.value.search);
+    console.log(form.value.search);
   }
 }

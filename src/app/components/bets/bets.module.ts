@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BetCreateComponent } from "./bet-create/bet-create.component";
 import { BetListComponent } from "./bet-list/bet-list.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { AngularMaterialModule } from "../../angular-material.module";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -11,6 +11,7 @@ import { RouterModule } from "@angular/router";
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     ReactiveFormsModule,
     AngularMaterialModule
   ]

@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   getAuthStatusListener() {
-    // Return as observable because I want to be able to lsiten from components but not to change it
+    // Return as observable because I want to be able to listen from components but not to change it
     return this.authStatusListener.asObservable();
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
     authData.append("username", username);
     authData.append("email", email);
     authData.append("password", password);
-    this.http.post(BACKEND_URL + "/signup", authData).subscribe(
+    this.http.post(BACKEND_URL + "signup", authData).subscribe(
       () => {
         this.router.navigate(["/auth/login"]);
       },
@@ -73,7 +73,7 @@ export class AuthService {
     };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
-        BACKEND_URL + "/login",
+        BACKEND_URL + "login",
         authData
       )
       .subscribe(

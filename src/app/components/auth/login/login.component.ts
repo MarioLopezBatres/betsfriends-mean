@@ -16,6 +16,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
+    this.setAuthStatusListener();
+  }
+
+  /** Creates a subscription to update isLoading when there is nothing logged in */
+  setAuthStatusListener() {
     this.authStatusSub = this.authService
       .getAuthStatusListener()
       .subscribe(authStatus => {
@@ -23,6 +28,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Calls authService in order to validate the login of an user
+   * @param form data inserted in the form
+   */
   onLogin(form: NgForm) {
     if (form.invalid) return;
     this.isLoading = true;

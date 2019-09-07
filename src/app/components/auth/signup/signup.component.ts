@@ -19,14 +19,20 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
+    this.setAuthStatusListener();
+    this.initializeReactiveForm();
+  }
+
+  /** Creates a subscription to update isLoading when there is nothing logged in */
+  setAuthStatusListener() {
     this.authStatusSub = this.authService
       .getAuthStatusListener()
       .subscribe(authStatus => {
         this.isLoading = false;
       });
-    this.initializeReactiveForm();
   }
 
+  /** Initializes the form and its attributes and properties */
   initializeReactiveForm() {
     this.form = new FormGroup({
       // initialValue, attach validators or form control options,
@@ -49,6 +55,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Creates an user within the form data and reset the form
+   */
   onSignUp() {
     if (this.form.invalid) return;
     this.isLoading = true;
@@ -62,6 +71,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.form.reset();
   }
 
+  /**
+   * Sets the file updated thorugh the input, stores the src in imagePreview, and shows a preview of it.
+   * @param event The value of image input has changed
+   */
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     // patchValue allows to targe a single control. Set value is for the whole form

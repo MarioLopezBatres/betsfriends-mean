@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { BetListComponent } from "./components/bets/bet-list/bet-list.component";
 import { BetCreateComponent } from "./components/bets/bet-create/bet-create.component";
 import { AuthGuard } from "./guards/auth.guards";
+import { LoginComponent } from "./components/auth/login/login.component";
 
 const routes: Routes = [
   {

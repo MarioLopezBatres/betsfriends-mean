@@ -1,6 +1,8 @@
 {
   "env": {
     "MONGO_ATLAS_PW": "M0scqhqVsdEpLu5B",
-    "JWT_KEY": "+HoF+Sj+lmRCo@ODssWDNlauB4SRkLl1dvooYCg8dslLlNlZfVnVFVoro2wGeIiZF38GBnJ5D8CdlTH02tIRCig=="
+    "JWT_KEY": "+HoF+Sj+lmRCo@ODssWDNlauB4SRkLl1dvooYCg8dslLlNlZfVnVFVoro2wGeIiZF38GBnJ5D8CdlTH02tIRCig==",
+    "USER": "AKIAWS4UHDRGQWFS4WU2",
+    "PASSWORD": "BFhUivZ0dwmTB9yivkWmhSLUg6HRUhm09zQQzgYxg5OB"
   }
 }

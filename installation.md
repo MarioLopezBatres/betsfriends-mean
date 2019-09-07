@@ -20,6 +20,12 @@ The Express philosophy is to provide small, robust tooling for HTTP servers, mak
 
 npm install --save express
 
+### Nodemailer
+
+Nodemailer is a module for Node.js applications to allow easy as cake email sending.
+
+npm install --save nodemailer
+
 ### nodemon
 
 Watches the nodejs file to automatically restart the server. To run it is necessary to add a script into package.json and call it using npm run nameScript
